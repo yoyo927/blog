@@ -7,16 +7,19 @@ use App\Models\Article;
 class ArticleController extends Controller
 {
     public function __construct(){
-        $this->middleware(middleware:'auth')->except(methods:'index');
+        $this->middleware('auth')->except('index','show');
     }
 
     public function index(){
         //撈出文章資料
-        $articles = Article::paginate(3);
+        $articles = Article::orderBy('id','desc')->paginate(3);
     
-        return view('articles.index', [
-            'articles' => $articles
-        ]);
+        return view('articles.index', ['articles' => $articles]);
+    }
+
+    public function show($id) {
+        $article = Article::find($id);
+        return view('articles.show', ['article' => $article]);
     }
 
     public function create(){
