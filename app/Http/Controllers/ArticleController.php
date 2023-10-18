@@ -12,7 +12,7 @@ class ArticleController extends Controller
 
     public function index(){
         //撈出文章資料
-        $articles = Article::all();
+        $articles = Article::paginate(3);
     
         return view('articles.index', [
             'articles' => $articles
@@ -31,5 +31,25 @@ class ArticleController extends Controller
         auth()->user()->articles()->create($content);
 
         return redirect()->route(route:'root')->with('notice','文章新增成功!');
+    }
+
+    public function edit($id){
+        // 此處要透過ID撈文章，再return view
+        $article = auth()->user()->articles->find($id);
+        return view('articles.edit',['article' => $article]);
+    }
+
+    public function update(Request $request, $id){
+        // TODO
+        $article = auth()->user()->articles->find($id);
+        // TODO驗證是否符合規則
+        $content = $request->validate([
+            'title' =>'required',//必填
+            'content' =>'required|min:10'//必填，最少10個字
+        ]);
+
+        $article->update($content);
+
+        return redirect()->route(route:'root')->with('notice','文章修改成功!');
     }
 }
