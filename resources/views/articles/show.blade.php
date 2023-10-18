@@ -5,5 +5,5 @@
     <p class="text-lg text-gray-700 p-2">
         {{$article->content}}
     </p>
-    <a href="{{route('article.index')}}">回文章列表</a>
+    <a href="{{route('articles.index')}}">回文章列表</a>
 @endsection
